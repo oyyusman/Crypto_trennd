@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Investor Profile | CryptoTrennd</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        :root {
+            --neon-primary: #00ff88;
+            --dark-bg: #0a0e17;
+            --dark-secondary: #1a1f2c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #8b95a5;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--neon-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+        }
+
+        .back-btn:hover i {
+            transform: translateX(-5px);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: #fff;
+            text-align: center;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: flex;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .profile-left {
+            flex: 1;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            margin-right: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            height: fit-content;
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--neon-primary);
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .investor-name {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .investor-company {
+            font-size: 1.1rem;
+            color: var(--neon-primary);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--neon-primary);
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        .profile-stats {
+            width: 100%;
+        }
+
+        .stat-card {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 2px solid var(--neon-primary);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--neon-primary);
+        }
+
+        .stat-roi {
+            font-size: 1.1rem;
+            color: #00e6d6;
+        }
+
+        .stat-country {
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .flag {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        /* Profile Right Section */
+        .profile-right {
+            flex: 2;
+            min-width: 280px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 70px;
+            height: 2px;
+            background: var(--neon-primary);
+        }
+
+        .investments-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .investment-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .investment-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-primary);
+            box-shadow: 0 8px 20px rgba(0, 255, 136, 0.2);
+        }
+
+        .investment-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 12px;
+            background: #fff;
+            padding: 4px;
+        }
+
+        .investment-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        /* Chart Section */
+        .chart-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            min-width: 280px;
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .chart-title {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            color: var(--neon-primary);
+        }
+
+        .chart-holder {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .chart-canvas-container {
+            width: 220px;
+            height: 220px;
+            position: relative;
+        }
+
+        .chart-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 25px;
+            justify-content: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .legend-item:hover {
+            background: rgba(173, 7, 7, 0.1);
+        }
+
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            /* border-radius: px; */
+            margin-right: 8px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--dark-secondary);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 0 50px rgba(0, 255, 136, 0.3);
+            border: 1px solid var(--neon-primary);
+            animation: modalIn 0.4s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--neon-primary);
+        }
+
+        .close-modal {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--neon-primary);
+            transform: scale(1.1);
+        }
+
+        .modal-body {
+            margin-bottom: 25px;
+        }
+
+        .modal-category {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--neon-primary);
+        }
+
+        .modal-percentage {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .modal-color {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        /* Animations */
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(0, 255, 136, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 136, 0);
+            }
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .profile-section {
+                flex-direction: column;
+            }
+
+            .profile-left {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+
+            .page-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .page-title {
+                font-size: 1.6rem;
+            }
+
+            .investor-name {
+                font-size: 1.6rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .investments-grid {
+                grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+                gap: 12px;
+            }
+
+            .investment-card {
+                padding: 12px;
+            }
+
+            .investment-logo {
+                width: 40px;
+                height: 40px;
+            }
+
+            .chart-wrapper {
+                padding: 20px;
+            }
+
+            .chart-canvas-container {
+                width: 180px;
+                height: 180px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .modal-percentage {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header with back button -->
+        <div class="profile-header">
+            <a href="../Dealer.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Investors
+            </a>
+            <h1 class="page-title">Investor Profile</h1>
+            <div></div> <!-- Empty div for spacing -->
+        </div>
+
+        <!-- Profile Section -->
+        <div class="profile-section">
+            <!-- Left Profile Column -->
+            <div class="profile-left">
+                <img src="../assets/img/Investor-img/investor8.png" alt="Investor" class="profile-img">
+                <h2 class="investor-name">HashKey Capital</h2>
+                <div class="investor-company">Tier 1 Venture</div>
+
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/hashkey-digital-asset-group/" target="_blank"
+                        title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Haskeyjordan" target="_blank" title="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+
+                <div class="profile-stats">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Investment</div>
+                        <div class="stat-value">269</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Retail ROI</div>
+                        <div class="stat-value stat-roi">1.90x <span
+                                style="color: #00ff88; font-size: 1rem;">+51.5%</span></div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-label">Country</div>
+                        <div class="stat-value stat-country">
+                            <span class="flag">HK</span> Hong Kong
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content Column -->
+            <div class="profile-right">
+                <!-- Top Investments Section -->
+                <h3 class="section-title">Top Investments</h3>
+                <div class="investments-grid">
+                    <div class="investment-card">
+                        <img src="../assets/img/Investor-img/braintrust.png" alt="Brain Trust" class="investment-logo">
+                        <div class="investment-name">Brain Trust</div>
+                    </div>
+                    <div class="investment-card">
+                        <img src="../assets/img/Investor-img/secret network.png" alt="Secret Network"
+                            class="investment-logo">
+                        <div class="investment-name">Secret Network</div>
+                    </div>
+                    <div class="investment-card">
+                        <img src="../assets/img/Investor-img/aztec.png" alt="Aztec" class="investment-logo">
+                        <div class="investment-name">Aztec</div>
+                    </div>
+                    <div class="investment-card">
+                        <img src="../assets/img/Investor-img/berachain.png" alt="berachain" class="investment-logo">
+                        <div class="investment-name">Berachain</div>
+                    </div>
+
+                </div>
+
+                <!-- Focus Area Section -->
+                <h3 class="section-title">Focus Area</h3>
+                <div class="chart-container">
+                    <div class="chart-wrapper">
+                        <div class="chart-title">Investment Distribution</div>
+                        <div class="chart-holder">
+                            <div class="chart-canvas-container">
+                                <canvas id="focusChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="chart-legend">
+                            <div class="legend-item" data-category="Payments">
+                                <div class="legend-color" style="background: #330fb6;"></div>
+                                <div>Seed sale (44.11%)</div>
+                            </div>
+                            <div class="legend-item" data-category="EVM">
+                                <div class="legend-color" style="background: #00e6d6;"></div>
+                                <div>Presale (13.22%)</div>
+                            </div>
+                            <div class="legend-item" data-category="SmartContract">
+                                <div class="legend-color" style="background: #00b3ff;"></div>
+                                <div>IEO (10.22%)</div>
+                            </div>
+                            <div class="legend-item" data-category="Governance">
+                                <div class="legend-color" style="background: #08b842;"></div>
+                                <div>ICO (10.11%)</div>
+                            </div>
+                            <div class="legend-item" data-category="Layer2">
+                                <div class="legend-color" style="background: #92b89d;"></div>
+                                <div>Private Token sale (12.22%)</div>
+                            </div>
+                            <div class="legend-item" data-category="Layer2">
+                                <div class="legend-color" style="background: #9a1da5;"></div>
+                                <div>OTC purchase (10.11%)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for chart details -->
+    <div class="modal" id="chartModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Investment Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-category">
+                    <span class="modal-color" id="modalColor"></span>
+                    <span id="modalCategory">Category Name</span>
+                </div>
+                <div class="modal-percentage" id="modalPercentage">00.00%</div>
+                <div class="modal-description" id="modalDescription">
+                    This category represents a portion of the investor's portfolio focus area.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the chart and modal functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('focusChart').getContext('2d');
+            const modal = document.getElementById('chartModal');
+            const modalCategory = document.getElementById('modalCategory');
+            const modalPercentage = document.getElementById('modalPercentage');
+            const modalColor = document.getElementById('modalColor');
+            const modalDescription = document.getElementById('modalDescription');
+            const closeModal = document.querySelector('.close-modal');
+
+            // Chart data based on your image
+            const categories = [
+                { name: "Seed Sale", value: 44.11, color: "#330fb6", description: "Investments in payment solutions and crypto payment processors." },
+                { name: "Presale", value: 13.22, color: "#00e6d6", description: "Investments focused on Ethereum Virtual Machine compatible projects." },
+                { name: "IEO", value: 10.22, color: "#00b3ff", description: "Investments in platforms that enable smart contract functionality." },
+                { name: "ICO", value: 10.11, color: "#08b842", description: "Investments in governance tokens and decentralized governance solutions." },
+                { name: "OTC Purchase", value: 10.11, color: "#9a1da5", description: "Investments in governance tokens and decentralized governance solutions." },
+                { name: "Private token sale", value: 12.22, color: "#92b89d", description: "Investments in layer 2 scaling solutions for blockchain networks." },
+                // { name: "DFD", value: 14.22, color: "#0044ff", description: "Miscellaneous investments across various blockchain sectors." }
+            ];
+
+            const data = {
+                labels: categories.map(cat => cat.name),
+                datasets: [{
+                    data: categories.map(cat => cat.value),
+                    backgroundColor: categories.map(cat => cat.color),
+                    borderColor: '#0a0e17',
+                    borderWidth: 2,
+                    cutout: '70%',
+                    hoverOffset: 5,     // <-- Add this for hover pop effect
+                    spacing: 2
+                }]
+            };
+
+            // Chart options for the outlined ring design
+            const options = {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return `${context.label}: ${context.parsed}%`;
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateRotate: true,
+                    animateScale: true
+                },
+                onClick: function (evt, elements) {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        showModal(index);
+                    }
+                }
+            };
+
+            const focusChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: options
+            });
+
+            // Add click event to legend items
+            document.querySelectorAll('.legend-item').forEach((item, index) => {
+                item.addEventListener('click', function () {
+                    showModal(index);
+                });
+            });
+
+            // Close modal events
+            closeModal.addEventListener('click', function () {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+
+            // Function to show modal with category details
+            function showModal(index) {
+                const category = categories[index];
+                modalCategory.textContent = category.name;
+                modalPercentage.textContent = category.value + '%';
+                modalColor.style.backgroundColor = category.color;
+                modalDescription.textContent = category.description;
+
+                modal.style.display = 'flex';
+            }
+
+            // Update URL with investor name
+            const path = window.location.pathname;
+            const investorName = "HashKey Capital";
+            const newUrl = window.location.origin + path + '?investor=' + encodeURIComponent(investorName);
+            window.history.replaceState({}, '', newUrl);
+        });
+    </script>
+</body>
+
+</html>

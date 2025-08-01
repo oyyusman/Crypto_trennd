@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoTrennd | Investor</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="assets/img/m1.jpg" rel="icon">
+    <link href="assets/img/m1.jpg" rel="apple-touch-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        :root {
+            --neon-primary: #00ff88;
+            --dark-bg: #0a0e17;
+            --dark-secondary: #1a1f2c;
+            --text-primary: #e0e0e0;
+            --text-secondary: #8b95a5;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--dark-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-top: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            animation: titleFloat 3s ease-in-out infinite;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .animated-bar {
+            width: 100px;
+            height: 3px;
+            background: var(--neon-primary);
+            margin: 0 auto;
+            animation: barExpand 2s ease-out forwards;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--neon-primary);
+            color: #000;
+        }
+
+        .dealers-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dealer-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .dealer-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.2);
+        }
+
+        .profile-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--neon-primary);
+            margin-right: 20px;
+            flex-shrink: 0;
+        }
+
+        .dealer-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .dealer-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .dealer-company {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            background: var(--neon-primary);
+            color: #000;
+            transform: translateY(-3px);
+        }
+
+        .view-profile {
+            display: inline-block;
+            margin-top: 15px;
+            color: var(--neon-primary);
+            font-size: 0.9rem;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .view-profile:hover {
+            color: #fff;
+        }
+
+        .view-profile::after {
+            content: '→';
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .view-profile:hover::after {
+            transform: translateX(5px);
+        }
+
+        /* Search bar */
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus {
+            border-color: var(--neon-primary);
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .search-bar::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--neon-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #fff;
+        }
+
+        /* Animations */
+        @keyframes titleFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes barExpand {
+            0% {
+                width: 0;
+                opacity: 0;
+            }
+
+            100% {
+                width: 100px;
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .header h1 {
+                font-size: 2.4rem;
+            }
+
+            .dealers-container {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .dealers-container {
+                grid-template-columns: 1fr;
+                max-width: 500px;
+            }
+
+            .filters {
+                gap: 10px;
+            }
+
+            .filter-btn {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .dealer-card {
+                flex-direction: row;
+                align-items: center;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .profile-img {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        .results-count {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+
+        <h1>Angle Investors</h1>
+        <div class="profile-header">
+            <a href="./index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <div></div>
+        </div>
+        <p>Connect with our network of professional crypto dealers and investment partners</p>
+        <div class="animated-bar"></div>
+    </div>
+    <div class="dealers-container">
+        <!-- Dealer 1 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor1.jpg" alt="John Lilic" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">John Lilic</h3>
+                <div class="dealer-company">Angle Investor</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/lilicjohn?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                        target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Johnlilic219" target="_blank" title="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor1.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+
+        <!-- Dealer 2 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor2.png" alt="Alex Bertomeu-Gilles" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Alex Bertomeu-Gilles</h3>
+                <div class="dealer-company">Angel Investor</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/alex-bertomeu-gilles-a1858728/" target="_blank"
+                        title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Alexbertomeu" target="_blank" title="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/investor2.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+        <!-- Dealer 4 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor3.png" alt="Solana Ventures" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Solana Ventures</h3>
+                <div class="dealer-company">Tier 3 Venture</div>
+                <div class="social-links">
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/davidsolanavc" target="_parent" title="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor3.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+
+        <!-- Dealer 5 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor5.png" alt="Kenetic Capital" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Kenetic Capital</h3>
+                <div class="dealer-company">Tier 2 Venture</div>
+                <div class="social-links">
+                    <a href="https://hk.linkedin.com/company/kenetic-capital" target="_blank" title="LinkedIn"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/KeneticCapital619" target="_blank" title="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/investor4.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+
+        <!-- Dealer 6 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor6.png" alt="Animoca Brands" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Animoca Brands</h3>
+                <div class="dealer-company">Tier 3 Venture</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/animoca-brands/" target="_blank" title="LinkedIn"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Aniiimoca" target="_blank" title="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor5.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+
+        <!-- Dealer 7 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor7.png" alt="cyber Fund" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">cyber Fund</h3>
+                <div class="dealer-company">Tier 3 Venture</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/cyberfund/" target="_blank" title="LinkedIn"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Cybernetworki" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor7.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+
+        <!-- Dealer 8 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor8.png" alt="HashKey Capital" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">HashKey Capital</h3>
+                <div class="dealer-company">Tier 1 Venture</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/hashkey-digital-asset-group/" target="_blank"
+                        title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Haskeyjordan" target="_blank" title="Telegram"><i
+                            class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/investor6.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+
+        <!-- Dealer 9 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor9.png" alt="Digital Currency Group " class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Digital Currency Group</h3>
+                <div class="dealer-company">Tier 2 Venture</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/digital-currency-group/" target="_blank"
+                        title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Dcgdot" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor8.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+        <!-- dealer 10 -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor10.png" alt="Andreessen Horowitz" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Andreessen Horowitz</h3>
+                <div class="dealer-company">Tier 1 Venture</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/a16z/" target="_blank" title="LinkedIn"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/a16zCryptoo16" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor9.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+        <!--   11 dealer -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor11.png" alt="InterVest" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">InterVest</h3>
+                <div class="dealer-company">Tier 4 Venture</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/intervest/" target="_blank" title="LinkedIn"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Intervestcom" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/investor10.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+        <!-- 12 dealer -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor12.png" alt="Faction" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Faction</h3>
+                <div class="dealer-company">Tier 3 Venture</div>
+                <div class="social-links">
+                    <a href="#" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/A1789fiction" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/investor11.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+        <!-- 13 dalers -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor13.png" alt="Outlier Ventures" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Outlier Ventures</h3>
+                <div class="dealer-company">Tier 3 Incubator</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/outlierventures/" target="_blank" title="LinkedIn"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Vanamer" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/investor12.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+        <!-- 14 dealer -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor14.png" alt="Token Bay Capital" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Token Bay Capital</h3>
+                <div class="dealer-company">Tier 3 Venture</div>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/company/tokenbaycapital/" target="_blank" title="LinkedIn"><i
+                            class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Tokenbayjordan" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor13.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+
+        <!-- 15 dealer -->
+        <div class="dealer-card">
+            <img src="./assets/img/Investor-img/investor15.png" alt="Circle Ventures Crypto" class="profile-img">
+            <div class="dealer-info">
+                <h3 class="dealer-name">Circle Ventures</h3>
+                <div class="dealer-company">Tier 3 Venture</div>
+                <div class="social-links">
+                    <a href="#" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://t.me/Circlec1" title="Telegram"><i class="fab fa-telegram"></i></a>
+                </div>
+                <a href="./investor/Investor14.html" class="view-profile">View full profile</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Simple search functionality
+            const searchBar = document.querySelector('.search-bar');
+            const dealerCards = document.querySelectorAll('.dealer-card');
+            const resultsCount = document.querySelector('.results-count');
+
+            searchBar.addEventListener('input', function () {
+                const searchTerm = searchBar.value.toLowerCase();
+                let visibleCount = 0;
+
+                dealerCards.forEach(card => {
+                    const dealerName = card.querySelector('.dealer-name').textContent.toLowerCase();
+                    const company = card.querySelector('.dealer-company').textContent.toLowerCase();
+
+                    if (dealerName.includes(searchTerm) || company.includes(searchTerm)) {
+                        card.style.display = 'flex';
+                        visibleCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                resultsCount.textContent = `Showing ${visibleCount} of ${dealerCards.length} dealers`;
+            });
+
+            // Filter buttons
+            const filterBtns = document.querySelectorAll('.filter-btn');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
